@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des articles{% endblock %}
+
+{% block body %}
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Liste des articles</h1>
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                <div class="row">
+                    {% for articles in article %}
+                        <div class="col-md-4">
+                            <div class="card mb-4" style="width: 100%;">
+                                {% if articles.imageFilename %}
+                                    <img src="{{ asset('uploads/images/' ~ articles.imageFilename) }}" 
+                                         class="card-img-top" 
+                                         alt="{{ articles.titre }}">
+                                {% else %}
+                                    <img src="" class="card-img-top" >
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ articles.id }}</h5>
+                                    <h5 class="card-subtitle">{{ articles.titre }}</h5>
+                                    <p class="card-text">{{ articles.texte | slice(0, 300) }}</p>
+                                    <p class="card-text">Créé le {{ articles.date ? articles.date|date('d-m-Y') : 'Pas de date' }}</p>
+                                    <div style="margin-top: 10px">
+                                        <a href="{{ path('update_article', {'id': articles.id}) }}" class="btn btn-primary" style="background-color: purple; border-radius:20px">Update</a>
+                                        <a href="{{ path('delete_article', {'id': articles.id}) }}" class="btn btn-primary" style="background-color: red; border-radius:20px">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <p>Aucun article trouvé.</p>
+                    {% endfor %}
+                </div>
+                <div style="height: 100vh"></div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        When scrolling, the navigation stays at the top of the page. This is the end of the static navigation demo.
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}
